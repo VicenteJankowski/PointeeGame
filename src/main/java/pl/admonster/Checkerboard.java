@@ -1,6 +1,4 @@
-package org.example;
-
-import org.jetbrains.annotations.NotNull;
+package pl.admonster;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -56,7 +54,7 @@ public class Checkerboard {
         return result.toString();
     }
 
-    public boolean contains(@NotNull Point newBirdPosition) {
+    public boolean contains(Point newBirdPosition) {
         return newBirdPosition.x >= 0 &
                newBirdPosition.x < checkerboard.length &
                newBirdPosition.y >= 0 &

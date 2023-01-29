@@ -1,4 +1,4 @@
-package org.example;
+package pl.admonster;
 
 import java.awt.*;
 import java.io.IOException;

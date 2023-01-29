@@ -1,4 +1,4 @@
-package org.example;
+package pl.admonster;
 
 public class RandomGenerator {
 
