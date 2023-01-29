@@ -11,18 +11,18 @@ import static java.lang.Boolean.TRUE;
 
 public class Checkerboard {
 
-    final private int[][] checkerboard = new int[15][15];
+    final private Fields[][] fields = new Fields[15][15];
 
     Checkerboard() {
-        for (int[] row : checkerboard)
-            Arrays.fill(row,1);
+        for (Fields[] row : fields)
+            Arrays.fill(row,new StandardPointee());
     }
 
     void birdApproachesToField(final Point birdPosition) {
         List<Point> adjacentSquares = getAdjacentSquaresTo(birdPosition);
         Point wherePointeesWillEscape = adjacentSquares.get(RandomGenerator.generateFromRange(0, adjacentSquares.size() - 1));
-        checkerboard[wherePointeesWillEscape.x][wherePointeesWillEscape.y] += checkerboard[birdPosition.x][birdPosition.y];
-        checkerboard[birdPosition.x][birdPosition.y] = 0;
+        //fields[wherePointeesWillEscape.x][wherePointeesWillEscape.y] += fields[birdPosition.x][birdPosition.y];
+        //fields[birdPosition.x][birdPosition.y] = 0;
     }
 
     public List<Point> getAdjacentSquaresTo(final Point centralSquare) {
@@ -45,9 +45,9 @@ public class Checkerboard {
     public String toString() {
         StringBuilder result = new StringBuilder();
 
-        for (int[] ints : checkerboard) {
-            for (int j = 0; j < checkerboard[0].length; j++)
-                result.append(String.format("%03d", ints[j]) + "   ");
+        for (Fields[] row : fields) {
+            for (int j = 0; j < fields[0].length; j++)
+                result.append(String.format("%03d", row[j]) + "   ");
             result.append(System.getProperty("line.separator"));
         }
 
@@ -56,9 +56,9 @@ public class Checkerboard {
 
     public boolean contains(Point newBirdPosition) {
         return newBirdPosition.x >= 0 &
-               newBirdPosition.x < checkerboard.length &
+               newBirdPosition.x < fields.length &
                newBirdPosition.y >= 0 &
-               newBirdPosition.y < checkerboard[0].length
+               newBirdPosition.y < fields[0].length
                 ? TRUE : FALSE;
     }
 
