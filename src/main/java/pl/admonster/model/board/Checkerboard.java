@@ -1,4 +1,7 @@
-package pl.admonster;
+package pl.admonster.model.board;
+
+import pl.admonster.utils.RandomGenerator;
+import pl.admonster.model.pointee.StandardPointee;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -9,22 +12,27 @@ import java.util.List;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-public class Checkerboard {
+public class Checkerboard implements Board{
 
-    final private Fields[][] fields = new Fields[15][15];
+    final private Field[][] fields = new Field[15][15];
 
-    Checkerboard() {
-        for (Fields[] row : fields)
+    public Checkerboard() {
+        for (Field[] row : fields)
             Arrays.fill(row,new StandardPointee());
     }
 
-    void birdApproachesToField(final Point birdPosition) {
-        List<Point> adjacentSquares = getAdjacentSquaresTo(birdPosition);
+    @Override
+    public void newMovingObjectOnField(final Point movingObjectPosition) {
+        List<Point> adjacentSquares = getAdjacentSquaresTo(movingObjectPosition);
         Point wherePointeesWillEscape = adjacentSquares.get(RandomGenerator.generateFromRange(0, adjacentSquares.size() - 1));
-        //fields[wherePointeesWillEscape.x][wherePointeesWillEscape.y] += fields[birdPosition.x][birdPosition.y];
-        //fields[birdPosition.x][birdPosition.y] = 0;
+
+        fields[wherePointeesWillEscape.x][wherePointeesWillEscape.y]
+                .addAllPointees(fields[movingObjectPosition.x][movingObjectPosition.y].getPointeesOn());
+
+        fields[movingObjectPosition.x][movingObjectPosition.y].removeAllPointees();
     }
 
+    @Override
     public List<Point> getAdjacentSquaresTo(final Point centralSquare) {
         List<Point> adjacentSquares = new ArrayList<>();
 
@@ -42,10 +50,24 @@ public class Checkerboard {
     }
 
     @Override
+    public boolean contains(Point newBirdPosition) {
+        return newBirdPosition.x >= 0 &
+                newBirdPosition.x < fields.length &
+                newBirdPosition.y >= 0 &
+                newBirdPosition.y < fields[0].length
+                ? TRUE : FALSE;
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        return contains(new Point(x,y));
+    }
+
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
 
-        for (Fields[] row : fields) {
+        for (Field[] row : fields) {
             for (int j = 0; j < fields[0].length; j++)
                 result.append(String.format("%03d", row[j]) + "   ");
             result.append(System.getProperty("line.separator"));
@@ -54,15 +76,4 @@ public class Checkerboard {
         return result.toString();
     }
 
-    public boolean contains(Point newBirdPosition) {
-        return newBirdPosition.x >= 0 &
-               newBirdPosition.x < fields.length &
-               newBirdPosition.y >= 0 &
-               newBirdPosition.y < fields[0].length
-                ? TRUE : FALSE;
-    }
-
-    public boolean contains(int x, int y) {
-        return contains(new Point(x,y));
-    }
 }

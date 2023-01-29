@@ -1,4 +1,4 @@
-package pl.admonster;
+package pl.admonster.utils;
 
 public class RandomGenerator {
 

@@ -1,6 +1,8 @@
 package pl.admonster;
 
 import org.junit.jupiter.api.Test;
+import pl.admonster.model.board.Checkerboard;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CheckerboardTest {
