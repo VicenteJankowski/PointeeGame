@@ -1,22 +1,24 @@
 package pl.admonster.controller;
 
 import pl.admonster.model.board.Board;
+import pl.admonster.model.board.BoardField;
 import pl.admonster.model.board.Checkerboard;
 import pl.admonster.model.movingObject.Bird;
 import pl.admonster.model.movingObject.MovingObject;
+import pl.admonster.model.pointee.Pointee;
 import pl.admonster.service.Game;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class CLIController {
 
     private static Game game;
     public static void start(){
         System.out.println("Welcome to PointeesGame!");
+        System.out.println("X axis is vertical, Y axis is horizontal. Coordinates of top left field are (0, 0)");
         System.out.println("If you want to finish game type non-digit character or string, when prompted to type anything.");
 
         initializeGame();
@@ -91,7 +93,32 @@ public class CLIController {
     }
 
     private static void sumUpGame() {
-        System.out.println("Thank you for play a Game!");
+        int pointOnSelectedBoardField = game.getSelectedToRedeem().getPointeesOn().stream().mapToInt(Pointee::getValue).sum();
+        List<BoardField> boardFieldsWithMaxValues = getBoardFieldsWithMaxValues();
+
+        System.out.println("############# GAME SCORE #############");
+        System.out.println("Maximum Pointees on single Coupon: " + boardFieldsWithMaxValues.get(0).sumPointeesValues());
+        System.out.println("Coupon with max points are located on:");
+        for (BoardField single : boardFieldsWithMaxValues)
+            System.out.println("X=" + single.getCoordinates().getX()
+                            + " Y=" + single.getCoordinates().getY());
+        System.out.println("Coupon selected to redeem is located on: X="
+                        + game.getSelectedToRedeem().getCoordinates().getX()
+                + " Y=" + game.getSelectedToRedeem().getCoordinates().getY());
+        System.out.println("You have accumulated " + pointOnSelectedBoardField + " points on your coupon selected to redeem.");
+        System.out.println("Thank you for playing a game!");
+    }
+
+    private static List<BoardField> getBoardFieldsWithMaxValues() {
+        Optional<Integer> maxPointeesPointsOnField = Arrays.stream(game.getGameBoard().getFields())
+                .flatMap(Arrays::stream)
+                .map(BoardField::sumPointeesValues)
+                .max(Integer::compareTo);
+
+        return Arrays.stream(game.getGameBoard().getFields())
+                .flatMap(Arrays::stream)
+                .filter(singleField -> maxPointeesPointsOnField.get().equals(singleField.sumPointeesValues()))
+                .collect(Collectors.toList());
     }
 
     public static Point askUserForNewCoordinates(){
