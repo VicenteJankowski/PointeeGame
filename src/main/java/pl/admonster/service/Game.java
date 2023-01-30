@@ -62,7 +62,10 @@ public class Game {
     }
 
     public Game setSelectedToRedeem(Point typedPoint) {
-        selectedToRedeem = new BoardField(typedPoint);
+        for (BoardField[] row : gameBoard.getFields())
+            for (BoardField singleField : row)
+                if(singleField.getCoordinates().equals(typedPoint))
+                    selectedToRedeem = singleField;
         return this;
     }
 
