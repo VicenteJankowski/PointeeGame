@@ -18,7 +18,7 @@ public class Game {
     private boolean isPossibleToFinish = true;
 
     enum possibleFinishes {
-        roundNumber(25, 50, 100);
+        roundNumber(5, 25, 50, 100);
 
         private final List<Object> values;
         possibleFinishes(Object firstValue, Object...nextObjects) {
