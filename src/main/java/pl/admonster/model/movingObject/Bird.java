@@ -24,6 +24,7 @@ public class Bird implements MovingObject {
         if(currentPosition.equals(newPosition))
             return nextPosition();
 
+        currentPosition = newPosition;
         return newPosition;
     }
 
