@@ -5,7 +5,6 @@ import pl.admonster.model.pointee.StandardPointee;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -14,11 +13,15 @@ import static java.lang.Boolean.TRUE;
 
 public class Checkerboard implements Board{
 
-    final private Field[][] fields = new Field[15][15];
-
+    final private BoardField[][] fields;
     public Checkerboard() {
-        for (Field[] row : fields)
-            Arrays.fill(row,new StandardPointee());
+        fields = new BoardField[15][15];
+        for (int i = 0 ; i < fields.length; i++)
+            for (int j = 0; j < fields[0].length; j++) {
+                fields[i][j] = new BoardField();
+                fields[i][j].setCoordinates(new Point(i, j));
+                fields[i][j].addSinglePointee(new StandardPointee());
+            }
     }
 
     @Override
@@ -67,7 +70,7 @@ public class Checkerboard implements Board{
     public String toString() {
         StringBuilder result = new StringBuilder();
 
-        for (Field[] row : fields) {
+        for (BoardField[] row : fields) {
             for (int j = 0; j < fields[0].length; j++)
                 result.append(String.format("%03d", row[j]) + "   ");
             result.append(System.getProperty("line.separator"));
