@@ -11,4 +11,6 @@ public interface Board {
     boolean contains(Point newBirdPosition);
 
     boolean contains(int x, int y);
+
+    BoardField[][] getFields();
 }
