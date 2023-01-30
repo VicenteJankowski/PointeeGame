@@ -1,24 +1,50 @@
 package pl.admonster.service;
 
-import pl.admonster.model.board.Checkerboard;
+import pl.admonster.model.board.Board;
+import pl.admonster.model.board.BoardField;
 import pl.admonster.model.movingObject.MovingObject;
 
 import java.awt.*;
 
-public class Game {
-    private final Checkerboard checkerboard;
-    private final MovingObject movingObject;
-    int roundNumber = 1;
+import static java.lang.Boolean.FALSE;
 
-    public Game(Checkerboard checkerboard, MovingObject movingObject) {
-        this.checkerboard = checkerboard;
+public class Game {
+    private final Board gameBoard;
+    private final MovingObject movingObject;
+    private BoardField selectedToRedeem;
+    int roundNumber = 1;
+    private boolean isFinshed = FALSE;
+
+    public Game(Board gameBoard, MovingObject movingObject) {
+        this.gameBoard = gameBoard;
         this.movingObject = movingObject;
     }
 
     public void playRound(Point startingPoint){
         movingObject.setStartingPosition(startingPoint);
-        checkerboard.newMovingObjectOnField(startingPoint);
-        while(checkerboard.contains(movingObject.nextPosition()))
-            checkerboard.newMovingObjectOnField(movingObject.getCurrentPosition());
+        gameBoard.newMovingObjectOnField(startingPoint);
+        while(gameBoard.contains(movingObject.nextPosition()))
+            gameBoard.newMovingObjectOnField(movingObject.getCurrentPosition());
+    }
+
+    public BoardField getSelectedToRedeem() {
+        return selectedToRedeem;
+    }
+
+    public Game setSelectedToRedeem(Point typedPoint) {
+        selectedToRedeem = new BoardField(typedPoint);
+        return this;
+    }
+
+    public boolean isNotfinshed() {
+        return !isFinshed;
+    }
+
+    public Board getGameBoard() {
+        return gameBoard;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 }
