@@ -1,5 +1,6 @@
 package pl.admonster.model.board;
 
+import pl.admonster.model.pointee.Pointee;
 import pl.admonster.utils.RandomGenerator;
 import pl.admonster.model.pointee.StandardPointee;
 
@@ -71,8 +72,14 @@ public class Checkerboard implements Board{
         StringBuilder result = new StringBuilder();
 
         for (BoardField[] row : fields) {
-            for (int j = 0; j < fields[0].length; j++)
-                result.append(String.format("%03d", row[j]) + "   ");
+            for (int j = 0; j < fields[0].length; j++) {
+                int valueOfPointeesOnField = row[j].getPointeesOn().stream()
+                                                   .mapToInt(Pointee::getValue)
+                                                   .sum();
+                result.append(String.format("%03d", valueOfPointeesOnField));
+                result.append("     ");
+            }
+
             result.append(System.getProperty("line.separator"));
         }
 
