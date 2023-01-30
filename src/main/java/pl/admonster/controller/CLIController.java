@@ -17,12 +17,7 @@ public class CLIController {
         System.out.println("If you want to finish game type non-digit character or string, when prompted to type anything.");
 
         initializeGame();
-        while (game.isNotfinshed()) {
-            System.out.println("ROUND NUMBER " + game.getRoundNumber());
-            System.out.println("Please select field for Bird to start flying.");
-            game.playRound(askUserForNewCoordinates());
-            System.out.println(game.getGameBoard());
-        }
+        playGame();
         sumUpGame();
     }
 
@@ -31,13 +26,27 @@ public class CLIController {
         MovingObject movingObject = new Bird();
         game = new Game(gameBoard, movingObject);
 
-        Point typedPoint;
+        Point typedIn;
         do {
             System.out.println("Please select field you would like to redeem.");
-            typedPoint = askUserForNewCoordinates();
-        } while (!gameBoard.contains(typedPoint));
+            typedIn = askUserForNewCoordinates();
+        } while (!gameBoard.contains(typedIn));
 
-        game.setSelectedToRedeem(typedPoint);
+        game.setSelectedToRedeem(typedIn);
+    }
+
+    private static void playGame() {
+        while (game.isNotfinshed()) {
+            System.out.println("ROUND NUMBER " + game.getRoundNumber());
+            System.out.println("Please select field for Bird to start flying.");
+            Point typedIn = askUserForNewCoordinates();
+            while (!game.getGameBoard().contains(typedIn)) {
+                System.out.println("Typed coordinates out of gameboard. Please type again");
+                typedIn = askUserForNewCoordinates();
+            }
+            game.playRound(typedIn);
+            System.out.println(game.getGameBoard());
+        }
     }
 
     private static void sumUpGame() {
