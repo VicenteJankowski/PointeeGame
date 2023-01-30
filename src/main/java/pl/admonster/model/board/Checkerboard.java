@@ -70,14 +70,15 @@ public class Checkerboard implements Board{
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-
+        result.append(".........................GAMEBOARD..........................");
+        result.append(System.getProperty("line.separator"));
         for (BoardField[] row : fields) {
             for (int j = 0; j < fields[0].length; j++) {
                 int valueOfPointeesOnField = row[j].getPointeesOn().stream()
                                                    .mapToInt(Pointee::getValue)
                                                    .sum();
                 result.append(String.format("%03d", valueOfPointeesOnField));
-                result.append("     ");
+                result.append(".");
             }
 
             result.append(System.getProperty("line.separator"));
