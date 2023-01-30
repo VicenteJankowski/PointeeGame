@@ -63,6 +63,11 @@ public class Checkerboard implements Board{
     }
 
     @Override
+    public BoardField[][] getFields() {
+        return fields;
+    }
+
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append(".........................GAMEBOARD..........................");
