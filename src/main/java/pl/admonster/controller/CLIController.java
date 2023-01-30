@@ -7,6 +7,9 @@ import pl.admonster.model.movingObject.MovingObject;
 import pl.admonster.service.Game;
 
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLIController {
@@ -46,10 +49,49 @@ public class CLIController {
             }
             game.playRound(typedIn);
             System.out.println(game.getGameBoard());
+            if(game.isPossibleToFinish())
+                askUserIfWishToContinue();
         }
     }
 
+    private static void askUserIfWishToContinue() {
+        System.out.println("You have reached round number " + (game.getRoundNumber() - 1));
+        System.out.println("Would you like to finish now and redeem coupon or continue?");
+        System.out.println("Type 1 if you want to finish or 2 if you wish to continue.");
+
+        switch (askUserForOneOfIntOptions(new ArrayList<>(Arrays.asList(1, 2)))) {
+            case 1:
+                game.finish();
+                break;
+            case 2:
+                break;
+            case -1:
+                System.out.println("Could not obtain chosen option. Game over.");
+                appFinshedByUser();
+        }
+    }
+
+    private static int askUserForOneOfIntOptions(List<Integer> options) {
+        Scanner s = new Scanner(System.in);
+        boolean succeed = false;
+        int selectedOption = -1;
+
+        while (!succeed) {
+            try {
+                selectedOption = Integer.parseInt(s.next());
+            } catch (NumberFormatException e) {
+                appFinshedByUser();
+            }
+            if (!options.contains(selectedOption))
+                System.out.println("Not a valid option. Type again.");
+            else
+                succeed = true;
+        }
+        return selectedOption;
+    }
+
     private static void sumUpGame() {
+        System.out.println("Thank you for play a Game!");
     }
 
     public static Point askUserForNewCoordinates(){
@@ -60,18 +102,18 @@ public class CLIController {
         try {
             typedPoint.x = Integer.parseInt(s.next());
         } catch (NumberFormatException e) {
-            gameFinishedByUser();
+            appFinshedByUser();
         }
         System.out.println("Type Y coordinate: ");
         try {
             typedPoint.y = Integer.parseInt(s.next());
         } catch (NumberFormatException e) {
-            gameFinishedByUser();
+            appFinshedByUser();
         }
         return typedPoint;
     }
 
-    private static void gameFinishedByUser(){
+    private static void appFinshedByUser(){
         System.out.println("Typed string is not valid number. Game over.");
         System.exit(0);
     }
