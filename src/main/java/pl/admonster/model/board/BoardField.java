@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardField {
-    private Point coordinates;
-    private List<Pointee> pointeesOn;
+    private final Point coordinates;
+    private final List<Pointee> pointeesOn;
 
     public BoardField() {
         coordinates = new Point();
@@ -38,7 +38,15 @@ public class BoardField {
         return this;
     }
 
+    public int sumPointeesValues() {
+        return pointeesOn.stream().mapToInt(Pointee::getValue).sum();
+    }
+
     public void setCoordinates(Point point) {
         coordinates.setLocation(point);
+    }
+
+    public Point getCoordinates() {
+        return coordinates;
     }
 }
