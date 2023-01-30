@@ -8,10 +8,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-
 public class Checkerboard implements Board{
 
     final private BoardField[][] fields;
@@ -58,8 +54,7 @@ public class Checkerboard implements Board{
         return newBirdPosition.x >= 0 &
                 newBirdPosition.x < fields.length &
                 newBirdPosition.y >= 0 &
-                newBirdPosition.y < fields[0].length
-                ? TRUE : FALSE;
+                newBirdPosition.y < fields[0].length;
     }
 
     @Override
