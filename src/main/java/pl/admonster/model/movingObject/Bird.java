@@ -1,7 +1,6 @@
 package pl.admonster.model.movingObject;
 
 import pl.admonster.utils.RandomGenerator;
-import pl.admonster.model.board.Checkerboard;
 
 import java.awt.*;
 
@@ -10,6 +9,7 @@ public class Bird implements MovingObject {
     private Point startingPosition;
     private Point currentPosition;
 
+    public Bird() {}
     public Bird(Point startingPosition) {
         this.startingPosition = startingPosition;
         this.currentPosition = startingPosition;
@@ -27,18 +27,6 @@ public class Bird implements MovingObject {
         return newPosition;
     }
 
-    public void flyOver(Checkerboard checkerboard) {
-        currentPosition.setLocation(startingPosition);
-
-        while(checkerboard.contains(currentPosition)) {
-            checkerboard.birdApproachesToField(currentPosition);
-            System.out.println("Aktualna pozycja ptaka: " + currentPosition);
-            currentPosition = nextPosition();
-        }
-
-        System.out.println("####Przelot zakończony####");
-    }
-
     @Override
     public Point getCurrentPosition() {
         return currentPosition;
@@ -47,6 +35,7 @@ public class Bird implements MovingObject {
     @Override
     public Point setStartingPosition(Point startingPoint) {
         this.startingPosition = startingPoint;
+        currentPosition = startingPosition;
         return startingPosition;
     }
 }
