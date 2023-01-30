@@ -5,15 +5,34 @@ import pl.admonster.model.board.BoardField;
 import pl.admonster.model.movingObject.MovingObject;
 
 import java.awt.*;
-
-import static java.lang.Boolean.FALSE;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Game {
     private final Board gameBoard;
     private final MovingObject movingObject;
     private BoardField selectedToRedeem;
     int roundNumber = 1;
-    private boolean isFinshed = FALSE;
+    private boolean isFinshed = false;
+    private boolean isPossibleToFinish = true;
+
+    enum possibleFinishes {
+        roundNumber(25, 50, 100);
+
+        private final List<Object> values;
+        possibleFinishes(Object firstValue, Object...nextObjects) {
+            values = new ArrayList<>();
+            Collections.addAll(values, firstValue, nextObjects);
+        }
+
+        public boolean equalsToAnyValue(Object o){
+            for (Object singleValue : values)
+                if (singleValue.equals(o))
+                    return true;
+            return false;
+        }
+    }
 
     public Game(Board gameBoard, MovingObject movingObject) {
         this.gameBoard = gameBoard;
@@ -25,7 +44,17 @@ public class Game {
         gameBoard.newMovingObjectOnField(startingPoint);
         while(gameBoard.contains(movingObject.nextPosition()))
             gameBoard.newMovingObjectOnField(movingObject.getCurrentPosition());
+        checkIfPossibleToFinish();
         roundNumber++;
+    }
+
+    private void checkIfPossibleToFinish() {
+        isPossibleToFinish = possibleFinishes.roundNumber.equalsToAnyValue(this.roundNumber);
+    }
+
+    public boolean finish() {
+        isFinshed = true;
+        return true;
     }
 
     public BoardField getSelectedToRedeem() {
@@ -47,5 +76,9 @@ public class Game {
 
     public int getRoundNumber() {
         return roundNumber;
+    }
+
+    public boolean isPossibleToFinish() {
+        return isPossibleToFinish;
     }
 }
