@@ -25,6 +25,7 @@ public class Game {
         gameBoard.newMovingObjectOnField(startingPoint);
         while(gameBoard.contains(movingObject.nextPosition()))
             gameBoard.newMovingObjectOnField(movingObject.getCurrentPosition());
+        roundNumber++;
     }
 
     public BoardField getSelectedToRedeem() {
