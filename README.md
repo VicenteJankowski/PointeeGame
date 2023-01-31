@@ -25,6 +25,6 @@ mvn test
 You start by selecting the coordinates of the field with a coupon to redeem. Please, keep in mind that X axis is vertical, Y axis is horizontal. Coordinates of the top left field are (0, 0).
 In each round you have to pass a starting point coordinates for the bird.
 
-You can finish a game after the 5th, 25th, 50th or 100th round. At the end of the game the application will print a coupon with maximum points and the points you have gathered on your coupon.
+You can finish a game after the 5th, 25th, 50th. You can also continue until the 100th round, if you think you will get more points on your coupon. At the end of the game the application will print a coupon with maximum points and the points you have gathered on your coupon.
 
 Good luck!
