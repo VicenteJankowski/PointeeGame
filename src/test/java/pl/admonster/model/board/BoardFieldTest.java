@@ -1,6 +1,5 @@
 package pl.admonster.model.board;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.admonster.model.pointee.Pointee;
@@ -17,7 +16,7 @@ class BoardFieldTest {
     void setUp() {
         boardfield = new BoardField();
         for (int i = 0; i < 10; i++)
-            boardfield.addSinglePointee(new StandardPointee());
+            boardfield.getPointeesOn().add(new StandardPointee());
 
         standardPointee = new StandardPointee();
     }
