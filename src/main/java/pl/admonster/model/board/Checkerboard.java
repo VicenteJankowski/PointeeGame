@@ -5,14 +5,13 @@ import pl.admonster.service.Game;
 import pl.admonster.model.pointee.StandardPointee;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Checkerboard implements Board {
 
     final private BoardField[][] fields;
+
     public Checkerboard() {
         fields = new BoardField[15][15];
         for (int i = 0 ; i < fields.length; i++)
@@ -74,6 +73,23 @@ public class Checkerboard implements Board {
         List<Pointee> pointeesLocatedOnAffected = List.copyOf(affected.getPointeesOn());
         for(Pointee singleThing : pointeesLocatedOnAffected)
             singleThing.contactWithMovingObject(game);
+    }
+
+    @Override
+    public Integer getMaxPointeeValuesOnBoard() {
+        return Arrays.stream(fields)
+                .flatMap(Arrays::stream)
+                .map(BoardField::sumPointeesValues)
+                .max(Integer::compareTo)
+                .get();
+    }
+
+    @Override
+    public List<BoardField> getBoardFieldsWithMaxPointeeValues() {
+        return Arrays.stream(fields)
+                .flatMap(Arrays::stream)
+                .filter(singleField -> getMaxPointeeValuesOnBoard().equals(singleField.sumPointeesValues()))
+                .collect(Collectors.toList());
     }
 
     @Override

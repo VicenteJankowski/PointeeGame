@@ -1,11 +1,12 @@
 package pl.admonster.model.board;
 
 import pl.admonster.model.movingObject.TriggeredByMovingObject;
+import pl.admonster.model.pointee.Pointeeable;
 
 import java.awt.*;
 import java.util.List;
 
-public interface Board extends TriggeredByMovingObject {
+public interface Board extends TriggeredByMovingObject, Pointeeable {
 
     List<Point> getAdjacentSquaresTo(final Point centralSquare);
 

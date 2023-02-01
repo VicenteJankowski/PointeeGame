@@ -5,13 +5,11 @@ import pl.admonster.model.board.BoardField;
 import pl.admonster.model.board.Checkerboard;
 import pl.admonster.model.movingObject.Bird;
 import pl.admonster.model.movingObject.MovingObject;
-import pl.admonster.model.pointee.Pointee;
 import pl.admonster.service.Game;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CLIController {
 
@@ -93,8 +91,8 @@ public class CLIController {
     }
 
     private static void sumUpGame() {
-        int pointOnSelectedBoardField = game.getSelectedToRedeem().getPointeesOn().stream().mapToInt(Pointee::getValue).sum();
-        List<BoardField> boardFieldsWithMaxValues = getBoardFieldsWithMaxValues();
+        int pointOnSelectedBoardField = game.getSelectedToRedeem().sumPointeesValues();
+        List<BoardField> boardFieldsWithMaxValues = game.getGameBoard().getBoardFieldsWithMaxPointeeValues();
 
         System.out.println("############# GAME SCORE #############");
         System.out.println("Maximum Pointees on single Coupon: " + boardFieldsWithMaxValues.get(0).sumPointeesValues());
@@ -107,18 +105,6 @@ public class CLIController {
                 + " Y=" + game.getSelectedToRedeem().getCoordinates().getY());
         System.out.println("You have accumulated " + pointOnSelectedBoardField + " points on your coupon selected to redeem.");
         System.out.println("Thank you for playing a game!");
-    }
-
-    private static List<BoardField> getBoardFieldsWithMaxValues() {
-        Optional<Integer> maxPointeesPointsOnField = Arrays.stream(game.getGameBoard().getFields())
-                .flatMap(Arrays::stream)
-                .map(BoardField::sumPointeesValues)
-                .max(Integer::compareTo);
-
-        return Arrays.stream(game.getGameBoard().getFields())
-                .flatMap(Arrays::stream)
-                .filter(singleField -> maxPointeesPointsOnField.get().equals(singleField.sumPointeesValues()))
-                .collect(Collectors.toList());
     }
 
     public static Point askUserForNewCoordinates(){
