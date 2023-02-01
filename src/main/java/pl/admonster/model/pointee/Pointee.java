@@ -1,5 +1,8 @@
 package pl.admonster.model.pointee;
 
-public interface Pointee {
+import pl.admonster.model.movingObject.TriggeredByMovingObject;
+
+public interface Pointee extends TriggeredByMovingObject {
     int getValue();
+
 }

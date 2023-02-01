@@ -1,11 +1,12 @@
 package pl.admonster.model.board;
 
+import pl.admonster.model.movingObject.TriggeredByMovingObject;
+
 import java.awt.*;
 import java.util.List;
 
-public interface Board {
+public interface Board extends TriggeredByMovingObject {
 
-    void newMovingObjectOnField(final Point movingObjectPosition);
     List<Point> getAdjacentSquaresTo(final Point centralSquare);
 
     boolean contains(Point newBirdPosition);
@@ -13,4 +14,6 @@ public interface Board {
     boolean contains(int x, int y);
 
     BoardField[][] getFields();
+
+    BoardField getFieldWithCoordinates(Point currentPosition);
 }

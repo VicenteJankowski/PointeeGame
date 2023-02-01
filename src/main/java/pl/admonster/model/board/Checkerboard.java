@@ -1,14 +1,16 @@
 package pl.admonster.model.board;
 
 import pl.admonster.model.pointee.Pointee;
-import pl.admonster.utils.RandomGenerator;
+import pl.admonster.service.Game;
 import pl.admonster.model.pointee.StandardPointee;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public class Checkerboard implements Board{
+public class Checkerboard implements Board {
 
     final private BoardField[][] fields;
     public Checkerboard() {
@@ -17,19 +19,8 @@ public class Checkerboard implements Board{
             for (int j = 0; j < fields[0].length; j++) {
                 fields[i][j] = new BoardField();
                 fields[i][j].setCoordinates(new Point(i, j));
-                fields[i][j].addSinglePointee(new StandardPointee());
+                fields[i][j].getPointeesOn().add(new StandardPointee());
             }
-    }
-
-    @Override
-    public void newMovingObjectOnField(final Point movingObjectPosition) {
-        List<Point> adjacentSquares = getAdjacentSquaresTo(movingObjectPosition);
-        Point wherePointeesWillEscape = adjacentSquares.get(RandomGenerator.generateFromRange(0, adjacentSquares.size() - 1));
-
-        fields[wherePointeesWillEscape.x][wherePointeesWillEscape.y]
-                .addAllPointees(fields[movingObjectPosition.x][movingObjectPosition.y].getPointeesOn());
-
-        fields[movingObjectPosition.x][movingObjectPosition.y].removeAllPointees();
     }
 
     @Override
@@ -50,7 +41,7 @@ public class Checkerboard implements Board{
     }
 
     @Override
-    public boolean contains(Point newBirdPosition) {
+    public boolean contains(final Point newBirdPosition) {
         return newBirdPosition.x >= 0 &
                 newBirdPosition.x < fields.length &
                 newBirdPosition.y >= 0 &
@@ -65,6 +56,24 @@ public class Checkerboard implements Board{
     @Override
     public BoardField[][] getFields() {
         return fields;
+    }
+
+    @Override
+    public BoardField getFieldWithCoordinates(Point currentPosition) {
+        return Arrays.stream(fields).flatMap(Arrays::stream)
+                                    .filter(i -> i.getCoordinates().equals(currentPosition))
+                                    .findFirst()
+                                    .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public void contactWithMovingObject(Game game) {
+        Point movingObjectPosition = game.getMovingObject().getCurrentPosition();
+        BoardField affected = game.getGameBoard().getFieldWithCoordinates(movingObjectPosition);
+
+        List<Pointee> pointeesLocatedOnAffected = List.copyOf(affected.getPointeesOn());
+        for(Pointee singleThing : pointeesLocatedOnAffected)
+            singleThing.contactWithMovingObject(game);
     }
 
     @Override
@@ -86,5 +95,4 @@ public class Checkerboard implements Board{
 
         return result.toString();
     }
-
 }

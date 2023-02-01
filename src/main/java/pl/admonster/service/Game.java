@@ -13,7 +13,7 @@ public class Game {
     private final Board gameBoard;
     private final MovingObject movingObject;
     private BoardField selectedToRedeem;
-    int roundNumber = 1;
+    private int roundNumber = 1;
     private boolean isFinshed = false;
     private boolean isPossibleToFinish = true;
 
@@ -41,9 +41,9 @@ public class Game {
 
     public void playRound(Point startingPoint){
         movingObject.setStartingPosition(startingPoint);
-        gameBoard.newMovingObjectOnField(startingPoint);
+        gameBoard.contactWithMovingObject(this);
         while(gameBoard.contains(movingObject.nextPosition()))
-            gameBoard.newMovingObjectOnField(movingObject.getCurrentPosition());
+            gameBoard.contactWithMovingObject(this);
         checkIfPossibleToFinish();
         roundNumber++;
     }
@@ -79,6 +79,10 @@ public class Game {
 
     public int getRoundNumber() {
         return roundNumber;
+    }
+
+    public MovingObject getMovingObject() {
+        return movingObject;
     }
 
     public boolean isPossibleToFinish() {
