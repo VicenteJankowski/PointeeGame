@@ -72,22 +72,30 @@ public class CLIController {
     }
 
     private static int askUserForOneOfIntOptions(List<Integer> options) {
-        Scanner s = new Scanner(System.in);
-        boolean succeed = false;
+        Scanner scanInput = new Scanner(System.in);
         int selectedOption = -1;
 
-        while (!succeed) {
-            try {
-                selectedOption = Integer.parseInt(s.next());
-            } catch (NumberFormatException e) {
-                appFinshedByUser();
-            }
+        while (true) {
+            selectedOption = getIntInputOrFinishApp(scanInput);
+
             if (!options.contains(selectedOption))
                 System.out.println("Not a valid option. Type again.");
             else
-                succeed = true;
+                break;
         }
         return selectedOption;
+    }
+
+    private static Point askUserForNewCoordinates(){
+        Scanner scanInput = new Scanner(System.in);
+        Point typedPoint = new Point();
+
+        System.out.println("Type X coordinate: ");
+        typedPoint.x = getIntInputOrFinishApp(scanInput);
+        System.out.println("Type Y coordinate: ");
+        typedPoint.y = getIntInputOrFinishApp(scanInput);
+
+        return typedPoint;
     }
 
     private static void sumUpGame() {
@@ -107,28 +115,19 @@ public class CLIController {
         System.out.println("Thank you for playing a game!");
     }
 
-    public static Point askUserForNewCoordinates(){
-        Scanner s = new Scanner(System.in);
-        Point typedPoint;
-        System.out.println("Type X coordinate: ");
-        typedPoint = new Point();
-        try {
-            typedPoint.x = Integer.parseInt(s.next());
-        } catch (NumberFormatException e) {
-            appFinshedByUser();
-        }
-        System.out.println("Type Y coordinate: ");
-        try {
-            typedPoint.y = Integer.parseInt(s.next());
-        } catch (NumberFormatException e) {
-            appFinshedByUser();
-        }
-        return typedPoint;
-    }
-
     private static void appFinshedByUser(){
         System.out.println("Typed string is not valid number. Game over.");
         System.exit(0);
+    }
+
+    private static int getIntInputOrFinishApp(Scanner scanInput) {
+        int selectedOption = -1;
+        if (scanInput.hasNextInt()) {
+            selectedOption = scanInput.nextInt();
+        } else
+            appFinshedByUser();
+
+        return selectedOption;
     }
 
 }
